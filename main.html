@@ -8,48 +8,30 @@
 
 <body>
     <div>
-        accelerationX:
-        <span id="accelerationX"></span>
-    </div>
-    <div>
-        accelerationY:
-        <span id="accelerationY"></span>
-    </div>
-    <div>
         accelerationZ:
         <span id="accelerationZ"></span>
     </div>
-    <div>
-        interval:
-        <span id="interval"></span>
-    </div>
     <script>
-        let minZ = 1;
-        let maxZ = -1;
-
-        let lastZ = 0;
+        window.onLean = amount => {
+            // Only look for amounts > 0, as these meant a lean forward
+            if (amount > 0) {
+                // TODO: Max amount leaning forward is 20, yet only ~10-12 is reached by normal leaning forward
+                // Hence color schemes could be 0-6 green, 7-10 yellow, 11-12 red
+            }
+        };
 
         window.ondevicemotion = event => {
-            document.getElementById('accelerationX').innerText = Math.floor(event.acceleration.x * 100);
-            document.getElementById('accelerationY').innerText = Math.floor(event.acceleration.y * 100);
+            let accelerationIGZ = Math.floor(event.accelerationIncludingGravity.z);
+            let accZ = Math.abs(accelerationIGZ);
+
             if (event.accelerationIncludingGravity.z > 0) {
-                document.getElementById('accelerationZ').innerText = "Back " + Math.floor(event.accelerationIncludingGravity.z - lastZ);
-            } else {
-                document.getElementById('accelerationZ').innerText = "Forward " + Math.floor(event.accelerationIncludingGravity.z - lastZ);
+                accZ *= -1;
             }
 
-            if (event.accelerationIncludingGravity.z < minZ)
-                minZ = Math.floor(event.accelerationIncludingGravity.z);
-
-            if (event.accelerationIncludingGravity.z > maxZ)
-                maxZ = Math.floor(event.accelerationIncludingGravity.z);
-
-            lastZ = Math.floor(event.accelerationIncludingGravity.z);
-
-            document.getElementById('accelerationZ').innerText += " - minZ: " + minZ + " - maxZ: " + maxZ;
-
-            document.getElementById('interval').innerText = event.interval;
-        }
+            if (window.onLean) {
+                window.onLean(accZ);
+            }
+        };
     </script>
 </body>
 
