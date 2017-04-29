@@ -8,10 +8,6 @@ const ReferenceFrame = Argon.Cesium.ReferenceFrame;
 const JulianDate = Argon.Cesium.JulianDate;
 const CesiumMath = Argon.Cesium.CesiumMath;
 
-function hideMe(elem) {
-  elem.style.display = 'none';
-}
-
 // set up Argon
 const app = Argon.init();
 
