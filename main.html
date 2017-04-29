@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div>
+    accelerationX:
+    <span id="accelerationX"></span>
+</div>
+<div>
+    accelerationY:
+    <span id="accelerationY"></span>
+</div>
+<div>
+    accelerationZ:
+    <span id="accelerationZ"></span>
+</div>
+<script>
+  window.ondevicemotion = function(event) {
+    document.getElementById('accelerationX').innerText = event.accelerationIncludingGravity.x;
+    document.getElementById('accelerationY').innerText = event.accelerationIncludingGravity.y;
+    document.getElementById('accelerationZ').innerText = event.accelerationIncludingGravity.z;
+  }
+</script>
+</body>
+</html>
