@@ -10,15 +10,15 @@ const port = 3000;
 
 app.use(bodyParser.json());
 
-app.all('*', function(req, res, next) {
-  var origin = req.get('origin');
+app.use((req, res, next) => {
+  const origin = req.get('origin');
   res.header('Access-Control-Allow-Origin', origin);
-  res.header("Access-Control-Allow-Headers", "X-Requested-With");
+  res.header('Access-Control-Allow-Headers', 'X-Requested-With');
   res.header('Access-Control-Allow-Headers', 'Content-Type');
   next();
 });
 
-app.post('/points', function (req, res) {
+app.post('/points', (req, res) => {
   console.log(req.body);
 
   if (!req.body) {
@@ -26,15 +26,20 @@ app.post('/points', function (req, res) {
   }
 
   const file = req.body.position === 'inner' ? 'inner.txt' : 'outer.txt';
-  fs.appendFileSync(file, `\n${ JSON.stringify(req.body.point)}`);
 
+  fs.appendFile(file, `\n${JSON.stringify(req.body.point)}`, err => {
+    if (err) {
+      console.error(err);
+    }
+
+    res.end();
+  });
+});
+
+app.all('*', (req, res) => {
   res.end();
 });
 
-app.all("*", (req, res) => {
-  res.end();
-});
-
-app.listen(port, function () {
-  console.log(`Server is listening on port ${ port }`);
+app.listen(port, () => {
+  console.log(`Server is listening on port ${port}`);
 });

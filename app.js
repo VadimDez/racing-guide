@@ -11,27 +11,27 @@ const JulianDate = Argon.Cesium.JulianDate;
 const CesiumMath = Argon.Cesium.CesiumMath;
 
 const innerPoints = [
-  {"x":0.7239232202266955,"y":-0.05768676830430602,"z":8.726333924908975},
-  {"x":2.2977402423407804,"y":-0.4843165834056728,"z":3.767754536912786},
-  {"x":1.9140858615530614,"y":-0.5274166705734699,"z":10.449892995710567},
-  {"x":2.8792310607942837,"y":-0.24024049126625185,"z":6.702484204068137},
-  {"x":5.463557962933769,"y":-0.32056558831499016,"z":7.516843276691716},
-  {"x":11.088339706874104,"y":-0.2629107957455837,"z":15.282163285405705},
-  {"x":2.166154261478748,"y":-0.3842378873606848,"z":14.697186840935876},
-  {"x":2.1382601931935157,"y":-0.3747857789461126,"z":17.649277200858577},
-  {"x":9.541234629122062,"y":0.3552871424579589,"z":24.06262547169071}
+  { "x": 0.7239232202266955, "y": -0.05768676830430602, "z": 8.726333924908975 },
+  { "x": 2.2977402423407804, "y": -0.4843165834056728, "z": 3.767754536912786 },
+  { "x": 1.9140858615530614, "y": -0.5274166705734699, "z": 10.449892995710567 },
+  { "x": 2.8792310607942837, "y": -0.24024049126625185, "z": 6.702484204068137 },
+  { "x": 5.463557962933769, "y": -0.32056558831499016, "z": 7.516843276691716 },
+  { "x": 11.088339706874104, "y": -0.2629107957455837, "z": 15.282163285405705 },
+  { "x": 2.166154261478748, "y": -0.3842378873606848, "z": 14.697186840935876 },
+  { "x": 2.1382601931935157, "y": -0.3747857789461126, "z": 17.649277200858577 },
+  { "x": 9.541234629122062, "y": 0.3552871424579589, "z": 24.06262547169071 }
 ];
 
 const outerPoints = [
-  {"x":-2.674050640392233,"y":0.049489231699738526,"z":9.434742634370437},
-  {"x":4.054521565704228,"y":-0.527410933223015,"z":6.238124697828823},
-  {"x":4.077389717913503,"y":-0.6187416257352576,"z":16.775141224721516},
-  {"x":5.329128729617455,"y":-0.38539331029199003,"z":12.152345524594704},
-  {"x":1.361955548895975,"y":0.14085323076506373,"z":12.446662782417507},
-  {"x":5.463557962933769,"y":-0.32056558831499016,"z":7.516843276691716},
-  {"x":6.947530942383697,"y":-0.4236862681545359,"z":20.082644610149575},
-  {"x":2.1382601931935157,"y":-0.3747857789461126,"z":17.649277200858577},
-  {"x":16.937574531927584,"y":-0.034420646868782316,"z":19.474827511234064}
+  { "x": -2.674050640392233, "y": 0.049489231699738526, "z": 9.434742634370437 },
+  { "x": 4.054521565704228, "y": -0.527410933223015, "z": 6.238124697828823 },
+  { "x": 4.077389717913503, "y": -0.6187416257352576, "z": 16.775141224721516 },
+  { "x": 5.329128729617455, "y": -0.38539331029199003, "z": 12.152345524594704 },
+  { "x": 1.361955548895975, "y": 0.14085323076506373, "z": 12.446662782417507 },
+  { "x": 5.463557962933769, "y": -0.32056558831499016, "z": 7.516843276691716 },
+  { "x": 6.947530942383697, "y": -0.4236862681545359, "z": 20.082644610149575 },
+  { "x": 2.1382601931935157, "y": -0.3747857789461126, "z": 17.649277200858577 },
+  { "x": 16.937574531927584, "y": -0.034420646868782316, "z": 19.474827511234064 }
 ];
 
 // set up Argon
@@ -116,13 +116,13 @@ app.context.setDefaultReferenceFrame(app.context.FIXED);
 // create a 100m cube with a Buzz texture on it, that we will attach to a geospatial object at Georgia Tech
 var buzz = new THREE.Object3D;
 var loader = new THREE.TextureLoader();
-loader.load( 'buzz.png', function ( texture ) {
+loader.load('buzz.png', texture => {
   var geometry = new THREE.BoxGeometry(10, 10, 10)
-  var material = new THREE.MeshBasicMaterial( { map: texture } )
+  var material = new THREE.MeshBasicMaterial({ map: texture })
 
-  var mesh = new THREE.Mesh( geometry, material )
-  mesh.scale.set(100,100,100)
-  buzz.add( mesh )
+  var mesh = new THREE.Mesh(geometry, material)
+  mesh.scale.set(100, 100, 100)
+  buzz.add(mesh)
 });
 
 // have our geolocated object start somewhere, in this case
@@ -146,11 +146,11 @@ var boxGeoObject = new THREE.Object3D;
 
 var box = new THREE.Object3D();
 var loader = new THREE.TextureLoader();
-loader.load( 'box.png', function ( texture ) {
+loader.load('box.png', texture => {
   var geometry = new THREE.BoxGeometry(1, 1, 1);
-  var material = new THREE.MeshBasicMaterial( { map: texture } );
-  var mesh = new THREE.Mesh( geometry, material );
-  box.add( mesh );
+  var material = new THREE.MeshBasicMaterial({ map: texture });
+  var mesh = new THREE.Mesh(geometry, material);
+  box.add(mesh);
 })
 
 var boxGeoEntity = new Argon.Cesium.Entity({
@@ -166,7 +166,7 @@ let boxLocDiv = document.getElementById("box-location");
 let boxLocDiv2 = boxLocDiv.cloneNode(true);
 const boxLabel = new THREE.CSS3DSprite([boxLocDiv, boxLocDiv2]);
 boxLabel.scale.set(0.02, 0.02, 0.02);
-boxLabel.position.set(0,1.25,0);
+boxLabel.position.set(0, 1.25, 0);
 boxGeoObject.add(boxLabel);
 
 // putting position and orientation in the constructor above is the
@@ -180,7 +180,7 @@ boxGeoObject.add(boxLabel);
 //     boxGeoEntity.orientation = boxOrientation;
 
 var boxInit = false;
-var boxCartographicDeg = [0,0,0];
+var boxCartographicDeg = [0, 0, 0];
 var lastInfoText = "";
 var lastBoxText = "";
 
@@ -193,7 +193,7 @@ function toFixed(value, precision) {
 // the updateEvent is called each time the 3D world should be
 // rendered, before the renderEvent.  The state of your application
 // should be updated here.
-app.updateEvent.addEventListener((frame) => {
+app.updateEvent.addEventListener(frame => {
   // get the position and orientation (the "pose") of the user
   // in the local coordinate frame.
   const userPose = app.context.getEntityPose(app.context.user);
@@ -243,8 +243,8 @@ app.updateEvent.addEventListener((frame) => {
 
   // rotate the boxes at a constant speed, independent of frame rates
   // to make it a little less boring
-  buzz.rotateY(2 * frame.deltaTime/10000);
-  box.rotateY( 3 * frame.deltaTime/10000);
+  buzz.rotateY(2 * frame.deltaTime / 10000);
+  box.rotateY(3 * frame.deltaTime / 10000);
 
   //
   // stuff to print out the status message.  It's fairly expensive to convert FIXED
@@ -253,7 +253,7 @@ app.updateEvent.addEventListener((frame) => {
   //
 
   // cartographicDegrees is a 3 element array containing [longitude, latitude, height]
-  var gpsCartographicDeg = [0,0,0];
+  var gpsCartographicDeg = [0, 0, 0];
 
   // get user position in global coordinates
   const userPoseFIXED = app.context.getEntityPose(app.context.user, ReferenceFrame.FIXED);
@@ -281,15 +281,15 @@ app.updateEvent.addEventListener((frame) => {
   var userPos = userLocation.getWorldPosition();
   var buzzPos = buzz.getWorldPosition();
   var boxPos = box.getWorldPosition();
-  var distanceToBox = userPos.distanceTo( boxPos );
-  var distanceToBuzz = userPos.distanceTo( buzzPos );
+  var distanceToBox = userPos.distanceTo(boxPos);
+  var distanceToBuzz = userPos.distanceTo(buzzPos);
 
   // create some feedback text
   var infoText = "Geospatial Argon example:<br>"
-  infoText += "Your location is lla (" + toFixed(gpsCartographicDeg[0],6) + ", ";
+  infoText += "Your location is lla (" + toFixed(gpsCartographicDeg[0], 6) + ", ";
   infoText += toFixed(gpsCartographicDeg[1], 6) + ", " + toFixed(gpsCartographicDeg[2], 2) + ")<br>";
-  infoText += " distance to Georgia Tech (" + toFixed(distanceToBuzz,2) + ")<br>";
-  infoText += "box is " + toFixed(distanceToBox,2) + " meters away";
+  infoText += " distance to Georgia Tech (" + toFixed(distanceToBuzz, 2) + ")<br>";
+  infoText += "box is " + toFixed(distanceToBox, 2) + " meters away";
 
   var boxLabelText = "a wooden box!<br>lla = " + toFixed(boxCartographicDeg[0], 6) + ", ";
   boxLabelText += toFixed(boxCartographicDeg[1], 6) + ", " + toFixed(boxCartographicDeg[2], 2) + "";
@@ -337,22 +337,22 @@ app.renderEvent.addEventListener(() => {
     camera.projectionMatrix.fromArray(subview.frustum.projectionMatrix);
 
     // set the viewport for this view
-    let {x,y,width,height} = subview.viewport;
+    let { x, y, width, height } = subview.viewport;
 
     // set the CSS rendering up, by computing the FOV, and render this view
     camera.fov = THREE.Math.radToDeg(frustum.fovy);
 
-    cssRenderer.setViewport(x,y,width,height, subview.index);
+    cssRenderer.setViewport(x, y, width, height, subview.index);
     cssRenderer.render(scene, camera, subview.index);
 
     // set the webGL rendering parameters and render this view
-    renderer.setViewport(x,y,width,height);
-    renderer.setScissor(x,y,width,height);
+    renderer.setViewport(x, y, width, height);
+    renderer.setScissor(x, y, width, height);
     renderer.setScissorTest(true);
     renderer.render(scene, camera);
 
     // adjust the hud
-    hud.setViewport(x,y,width,height, subview.index);
+    hud.setViewport(x, y, width, height, subview.index);
     hud.render(subview.index);
   }
 });
@@ -367,7 +367,7 @@ buttonOuterSend.addEventListener('click', () => {
   sendPoint('outer');
 });
 
-function sendPoint(position) {
+const sendPoint = position => {
   let headers = new Headers();
 
   headers.append('Content-Type', 'application/json');
