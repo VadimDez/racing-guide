@@ -99,7 +99,8 @@ hudContent.appendChild(holder);
 // The EUS frame cooresponds to the typical 3D computer graphics coordinate frame, so we use
 // that here.  The other option Argon supports is localOriginEastNorthUp, which is
 // more similar to what is used in the geospatial industry
-app.context.setDefaultReferenceFrame(app.context.localOriginEastUpSouth);
+// app.context.setDefaultReferenceFrame(app.context.localOriginEastUpSouth);
+app.context.setDefaultReferenceFrame(app.context.FIXED);
 
 // All geospatial objects need to have an Object3D linked to a Cesium Entity.
 // We need to do this because Argon needs a mapping between Entities and Object3Ds.
