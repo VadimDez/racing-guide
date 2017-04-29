@@ -331,3 +331,10 @@ app.renderEvent.addEventListener(() => {
   }
 })
 
+let button_send = document.getElementById("send-my-location");
+const userPose = app.context.getEntityPose(app.context.user);
+
+button_send.addEventListener('click',function(){
+  alert();
+  console.log( userPose );
+})
