@@ -11,27 +11,15 @@ const JulianDate = Argon.Cesium.JulianDate;
 const CesiumMath = Argon.Cesium.CesiumMath;
 
 const innerPoints = [
-  { "x": 0.7239232202266955, "y": -0.05768676830430602, "z": 8.726333924908975 },
-  { "x": 2.2977402423407804, "y": -0.4843165834056728, "z": 3.767754536912786 },
-  { "x": 1.9140858615530614, "y": -0.5274166705734699, "z": 10.449892995710567 },
-  { "x": 2.8792310607942837, "y": -0.24024049126625185, "z": 6.702484204068137 },
-  { "x": 5.463557962933769, "y": -0.32056558831499016, "z": 7.516843276691716 },
-  { "x": 11.088339706874104, "y": -0.2629107957455837, "z": 15.282163285405705 },
-  { "x": 2.166154261478748, "y": -0.3842378873606848, "z": 14.697186840935876 },
-  { "x": 2.1382601931935157, "y": -0.3747857789461126, "z": 17.649277200858577 },
-  { "x": 9.541234629122062, "y": 0.3552871424579589, "z": 24.06262547169071 }
+  {"x": 11.52395, "y": 48.095998900000002, "z": 552.0000000004357},
+  {"x": 11.52399, "y": 48.095998900000004, "z": 552.3000000004350},
+  {"x": 11.52345, "y": 48.095998900000005, "z": 552.3000000004357},
+  {"x": 11.52329, "y": 48.095998900000006, "z": 552.0000000004350},
 ];
 
 const outerPoints = [
-  { "x": -2.674050640392233, "y": 0.049489231699738526, "z": 9.434742634370437 },
-  { "x": 4.054521565704228, "y": -0.527410933223015, "z": 6.238124697828823 },
-  { "x": 4.077389717913503, "y": -0.6187416257352576, "z": 16.775141224721516 },
-  { "x": 5.329128729617455, "y": -0.38539331029199003, "z": 12.152345524594704 },
-  { "x": 1.361955548895975, "y": 0.14085323076506373, "z": 12.446662782417507 },
-  { "x": 5.463557962933769, "y": -0.32056558831499016, "z": 7.516843276691716 },
-  { "x": 6.947530942383697, "y": -0.4236862681545359, "z": 20.082644610149575 },
-  { "x": 2.1382601931935157, "y": -0.3747857789461126, "z": 17.649277200858577 },
-  { "x": 16.937574531927584, "y": -0.034420646868782316, "z": 19.474827511234064 }
+    {"x": 11.52395, "y": 48.095998900000005, "z": 552.3000000004357},
+    {"x": 11.52399, "y": 48.095998900000005, "z": 552.3000000004350},
 ];
 
 // set up Argon
@@ -374,10 +362,18 @@ app.renderEvent.addEventListener(() => {
     hud.setViewport(x, y, width, height, subview.index);
     hud.render(subview.index);
   }
+
+    // draw inner outer points
+
+    /*for(var i=0;i< innerPoints.length; i++){
+      console.log(innerPoints);
+    }*/
+
 });
 
 let buttonInnerSend = document.getElementById("send-my-location-inner");
 let buttonOuterSend = document.getElementById("send-my-location-outer");
+
 
 buttonInnerSend.addEventListener('click', () => {
   sendPoint('inner');
@@ -387,6 +383,40 @@ buttonOuterSend.addEventListener('click', () => {
 });
 
 const sendPoint = position => {
+
+    const userPose = app.context.getEntityPose(app.context.user, ReferenceFrame.FIXED);
+    const userLLA = Cesium.Ellipsoid.WGS84.cartesianToCartographic(userPose.position);
+    if (userLLA) {
+        gpsCartographicDeg = [
+            CesiumMath.toDegrees(userLLA.longitude),
+            CesiumMath.toDegrees(userLLA.latitude),
+            userLLA.height
+        ];
+    }
+
+    // console.log(CesiumMath.toDegrees(userLLA.longitude));
+    // console.log(CesiumMath.toDegrees(userLLA.latitude));
+    // console.log(CesiumMath.toDegrees(userLLA.longitude));
+    // console.log(CesiumMath.toDegrees(userLLA.latitude));
+
+    const boxPoseFIXED = app.context.getEntityPose(boxGeoEntity, ReferenceFrame.FIXED);
+    const boxLLA = Cesium.Ellipsoid.WGS84.cartesianToCartographic(boxPoseFIXED.position);
+    var boxCartographicDeg = {
+        x: CesiumMath.toDegrees(boxLLA.longitude),
+        y: CesiumMath.toDegrees(boxLLA.latitude),
+        z: boxLLA.height
+    };
+
+
+    // we'll compute the distance to the cube, just for fun. If the cube could be further away,
+    // we'd want to use Cesium.EllipsoidGeodesic, rather than Euclidean distance, but this is fine here.
+    /*var userPos = userLocation.getWorldPosition();
+    var buzzPos = buzz.getWorldPosition();
+    var boxPos = box.getWorldPosition();
+    var distanceToBox = userPos.distanceTo(boxPos);
+    var distanceToBuzz = userPos.distanceTo(buzzPos);*/
+
+
   let headers = new Headers();
 
   headers.append('Content-Type', 'application/json');
@@ -396,7 +426,95 @@ const sendPoint = position => {
     headers,
     body: JSON.stringify({
       position,
-      point: app.context.getEntityPose(app.context.user).position
+      point: boxCartographicDeg,
     })
   });
 }
+
+document.addEventListener("DOMContentLoaded", function() {
+
+    for(var i=0;i<innerPoints.length;i++){
+
+        var buzz = new THREE.Object3D;
+        var loader = new THREE.TextureLoader();
+        loader.load('buzz.png', texture => {
+            var geometry = new THREE.BoxGeometry(10, 10, 10)
+            var material = new THREE.MeshBasicMaterial({ map: texture })
+
+            var mesh = new THREE.Mesh(geometry, material)
+            mesh.scale.set(100, 100, 100)
+            buzz.add(mesh)
+        });
+
+// have our geolocated object start somewhere, in this case
+// near Georgia Tech in Atlanta.
+// you should probably adjust this to a spot closer to you
+// (we found the lon/lat of Georgia Tech using Google Maps)
+        var gatechGeoEntity = new Cesium.Entity({
+            name: "Zeiss",
+            // position: Cartesian3.fromDegrees(-84.398881, 33.778463),
+            position: Cartesian3.fromDegrees(innerPoints[i].x, innerPoints[i].y),
+            orientation: Cesium.Quaternion.IDENTITY
+        });
+
+        var gatechGeoTarget = new THREE.Object3D;
+        gatechGeoTarget.add(buzz)
+        scene.add(gatechGeoTarget);
+
+// create a 1m cube with a wooden box texture on it, that we will attach to the geospatial object when we create it
+// Box texture from https://www.flickr.com/photos/photoshoproadmap/8640003215/sizes/l/in/photostream/
+//, licensed under https://creativecommons.org/licenses/by/2.0/legalcode
+        var boxGeoObject = new THREE.Object3D;
+
+        var box = new THREE.Object3D();
+        var loader = new THREE.TextureLoader();
+        loader.load('box.png', texture => {
+            var geometry = new THREE.BoxGeometry(1, 1, 1);
+            var material = new THREE.MeshBasicMaterial({ map: texture });
+            var mesh = new THREE.Mesh(geometry, material);
+            box.add(mesh);
+        })
+
+        var boxGeoEntity = new Argon.Cesium.Entity({
+            name: "I have a box: "+i,
+            position:  Cartesian3.fromDegrees(innerPoints[i].x,innerPoints[i].y, innerPoints[i].z),//Cartesian3.ZERO,
+            orientation: Cesium.Quaternion.IDENTITY
+        });
+
+        boxGeoObject.add(box);
+
+// Create a DIV to use to label the position and distance of the cube
+        let boxLocDiv = document.getElementById("box-location");
+        let boxLocDiv2 = boxLocDiv.cloneNode(true);
+        const boxLabel = new THREE.CSS3DSprite([boxLocDiv, boxLocDiv2]);
+        boxLabel.scale.set(0.02, 0.02, 0.02);
+// boxLabel.scale.set(100000, 100000, 100000);
+        boxLabel.position.set(0, 1.25, 0);
+        boxGeoObject.add(boxLabel);
+
+// putting position and orientation in the constructor above is the
+// equivalent of doing this:
+//
+//     const boxPosition = new Cesium.ConstantPositionProperty
+//                   (Cartesian3.ZERO.clone(), ReferenceFrame.FIXED);
+//     boxGeoEntity.position = boxPosition;
+//     const boxOrientation = new Cesium.ConstantProperty(Cesium.Quaternion);
+//     boxOrientation.setValue(Cesium.Quaternion.IDENTITY);
+//     boxGeoEntity.orientation = boxOrientation;
+
+        //var boxInit = false;
+        var boxCartographicDeg = [innerPoints[i]];
+        var lastInfoText = "last info";
+        var lastBoxText = "last bax";
+
+// make floating point output a little less ugly
+        function toFixed(value, precision) {
+            var power = Math.pow(10, precision || 0);
+            return String(Math.round(value * power) / power);
+        }
+
+        boxGeoEntity.orientation.setValue(Cesium.Quaternion.IDENTITY);
+        scene.add(boxGeoObject);
+    }
+
+});
