@@ -329,12 +329,29 @@ app.renderEvent.addEventListener(() => {
     hud.setViewport(x,y,width,height, subview.index);
     hud.render(subview.index);
   }
-})
+});
 
-let button_send = document.getElementById("send-my-location");
-const userPose = app.context.getEntityPose(app.context.user);
+let buttonInnerSend = document.getElementById("send-my-location-inner");
+let buttonOuterSend = document.getElementById("send-my-location-outer");
 
-button_send.addEventListener('click',function(){
-  alert();
-  console.log( userPose );
-})
+buttonInnerSend.addEventListener('click', () => {
+  sendPoint('inner');
+});
+buttonOuterSend.addEventListener('click', () => {
+  sendPoint('outer');
+});
+
+function sendPoint(position) {
+  let headers = new Headers();
+
+  headers.append('Content-Type', 'application/json');
+
+  fetch('http://10.2.2.68:3000/points', {
+    method: 'POST',
+    headers,
+    body: JSON.stringify({
+      position,
+      point: app.context.getEntityPose(app.context.user).position
+    })
+  });
+}
