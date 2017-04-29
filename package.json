@@ -13,6 +13,7 @@
   "license": "ISC",
   "dependencies": {
     "@argonjs/argon": "^1.1.12",
+    "express": "^4.15.2",
     "three": "^0.85.2"
   },
   "devDependencies": {
@@ -21,6 +22,7 @@
     "babel-loader": "^7.0.0",
     "babel-preset-es2015": "^6.24.1",
     "babel-preset-react": "^6.24.1",
+    "body-parser": "^1.17.1",
     "css-loader": "^0.28.0",
     "node-sass": "^4.5.2",
     "sass-loader": "^6.0.3",

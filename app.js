@@ -10,6 +10,30 @@ const ReferenceFrame = Argon.Cesium.ReferenceFrame;
 const JulianDate = Argon.Cesium.JulianDate;
 const CesiumMath = Argon.Cesium.CesiumMath;
 
+const innerPoints = [
+  {"x":0.7239232202266955,"y":-0.05768676830430602,"z":8.726333924908975},
+  {"x":2.2977402423407804,"y":-0.4843165834056728,"z":3.767754536912786},
+  {"x":1.9140858615530614,"y":-0.5274166705734699,"z":10.449892995710567},
+  {"x":2.8792310607942837,"y":-0.24024049126625185,"z":6.702484204068137},
+  {"x":5.463557962933769,"y":-0.32056558831499016,"z":7.516843276691716},
+  {"x":11.088339706874104,"y":-0.2629107957455837,"z":15.282163285405705},
+  {"x":2.166154261478748,"y":-0.3842378873606848,"z":14.697186840935876},
+  {"x":2.1382601931935157,"y":-0.3747857789461126,"z":17.649277200858577},
+  {"x":9.541234629122062,"y":0.3552871424579589,"z":24.06262547169071}
+];
+
+const outerPoints = [
+  {"x":-2.674050640392233,"y":0.049489231699738526,"z":9.434742634370437},
+  {"x":4.054521565704228,"y":-0.527410933223015,"z":6.238124697828823},
+  {"x":4.077389717913503,"y":-0.6187416257352576,"z":16.775141224721516},
+  {"x":5.329128729617455,"y":-0.38539331029199003,"z":12.152345524594704},
+  {"x":1.361955548895975,"y":0.14085323076506373,"z":12.446662782417507},
+  {"x":5.463557962933769,"y":-0.32056558831499016,"z":7.516843276691716},
+  {"x":6.947530942383697,"y":-0.4236862681545359,"z":20.082644610149575},
+  {"x":2.1382601931935157,"y":-0.3747857789461126,"z":17.649277200858577},
+  {"x":16.937574531927584,"y":-0.034420646868782316,"z":19.474827511234064}
+];
+
 // set up Argon
 const app = Argon.init();
 //app.view.element.style.zIndex = 0;
@@ -75,7 +99,8 @@ hudContent.appendChild(holder);
 // The EUS frame cooresponds to the typical 3D computer graphics coordinate frame, so we use
 // that here.  The other option Argon supports is localOriginEastNorthUp, which is
 // more similar to what is used in the geospatial industry
-app.context.setDefaultReferenceFrame(app.context.localOriginEastUpSouth);
+// app.context.setDefaultReferenceFrame(app.context.localOriginEastUpSouth);
+app.context.setDefaultReferenceFrame(app.context.FIXED);
 
 // All geospatial objects need to have an Object3D linked to a Cesium Entity.
 // We need to do this because Argon needs a mapping between Entities and Object3Ds.
@@ -189,7 +214,9 @@ app.updateEvent.addEventListener((frame) => {
     // set the box's position to 10 meters away from the user.
     // First, clone the userPose postion, and add 10 to the X
     const boxPos = userPose.position.clone();
-    boxPos.x += 10;
+    boxPos.x = innerPoints[0].x;
+    boxPos.y = innerPoints[0].y;
+    boxPos.z += innerPoints[0].z;
     // set the value of the box Entity to this local position, by
     // specifying the frame of reference to our local frame
     boxGeoEntity.position.setValue(boxPos, defaultFrame);
@@ -199,8 +226,7 @@ app.updateEvent.addEventListener((frame) => {
 
     // now, we want to move the box's coordinates to the FIXED frame, so
     // the box doesn't move if the local coordinate system origin changes.
-    if (Argon.convertEntityReferenceFrame(boxGeoEntity, frame.time,
-        ReferenceFrame.FIXED)) {
+    if (Argon.convertEntityReferenceFrame(boxGeoEntity, frame.time, ReferenceFrame.FIXED)) {
       scene.add(boxGeoObject);
       boxInit = true;
     }
@@ -329,5 +355,29 @@ app.renderEvent.addEventListener(() => {
     hud.setViewport(x,y,width,height, subview.index);
     hud.render(subview.index);
   }
-})
+});
 
+let buttonInnerSend = document.getElementById("send-my-location-inner");
+let buttonOuterSend = document.getElementById("send-my-location-outer");
+
+buttonInnerSend.addEventListener('click', () => {
+  sendPoint('inner');
+});
+buttonOuterSend.addEventListener('click', () => {
+  sendPoint('outer');
+});
+
+function sendPoint(position) {
+  let headers = new Headers();
+
+  headers.append('Content-Type', 'application/json');
+
+  fetch('http://10.2.2.68:3000/points', {
+    method: 'POST',
+    headers,
+    body: JSON.stringify({
+      position,
+      point: app.context.getEntityPose(app.context.user).position
+    })
+  });
+}
