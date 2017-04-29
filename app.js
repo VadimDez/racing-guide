@@ -1,4 +1,4 @@
-import * as Argon from '@argonjs/argon';
+// import * as Argon from '@argonjs/argon';
 import * as THREE from 'three';
 
 // grab some handles on APIs we use
@@ -8,17 +8,21 @@ const ReferenceFrame = Argon.Cesium.ReferenceFrame;
 const JulianDate = Argon.Cesium.JulianDate;
 const CesiumMath = Argon.Cesium.CesiumMath;
 
+function hideMe(elem) {
+  elem.style.display = 'none';
+}
+
 // set up Argon
 const app = Argon.init();
 
 // Tell argon what local coordinate system you want.  The default coordinate
 // frame used by Argon is Cesium's FIXED frame, which is centered at the center
-// of the earth and oriented with the earth's axes.  
+// of the earth and oriented with the earth's axes.
 // The FIXED frame is inconvenient for a number of reasons: the numbers used are
 // large and cause issues with rendering, and the orientation of the user's "local
 // view of the world" is different that the FIXED orientation (my perception of "up"
-// does not correspond to one of the FIXED axes).  
-// Therefore, Argon uses a local coordinate frame that sits on a plane tangent to 
+// does not correspond to one of the FIXED axes).
+// Therefore, Argon uses a local coordinate frame that sits on a plane tangent to
 // the earth near the user's current location.  This frame automatically changes if the
 // user moves more than a few kilometers.
 // The EUS frame cooresponds to the typical 3D computer graphics coordinate frame, so we use
@@ -34,7 +38,7 @@ const userLocation = new THREE.Object3D;
 scene.add(camera);
 scene.add(userLocation);
 
-// In this demo, we are  rendering the 3D graphics with WebGL, 
+// In this demo, we are  rendering the 3D graphics with WebGL,
 // using the standard WebGLRenderer
 const renderer = new THREE.WebGLRenderer({
   alpha: true,
@@ -43,7 +47,7 @@ const renderer = new THREE.WebGLRenderer({
 renderer.setPixelRatio(window.devicePixelRatio);
 app.view.element.appendChild(renderer.domElement);
 
-// We put some elements in the index.html, for convenience. 
+// We put some elements in the index.html, for convenience.
 const locationElement = document.getElementById("location");
 
 // All geospatial objects need to have an Object3D linked to a Cesium Entity.
@@ -53,7 +57,7 @@ const locationElement = document.getElementById("location");
 // location, until our reality is set and we know the location.  Each time the reality changes, we update
 // the cube position.
 
-// This code creates a 1m cube with a wooden box texture on it, 
+// This code creates a 1m cube with a wooden box texture on it,
 // that we will attach to the geospatial object when we create it.
 // Box texture from https://www.flickr.com/photos/photoshoproadmap/8640003215/sizes/l/in/photostream/
 // licensed under https://creativecommons.org/licenses/by/2.0/legalcode
