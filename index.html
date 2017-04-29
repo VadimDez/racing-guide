@@ -2,14 +2,22 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
   <head>
     <title>Geo</title>
-    <!--<script src="./node_modules/three/build/three.min.js"></script>-->
+    <script src="./node_modules/three/build/three.min.js"></script>
     <script src="./node_modules/@argonjs/argon/dist/argon.min.js"></script>
     <link rel="stylesheet" type="text/css" href="style.css">
   </head>
   <body>
-    <div id="argon">
 
+
+  <div id="argon">
+    <div id="hud">
+      <div id="menu" class="menu">
+        <button class="location">lon (0) lat (0)</button>
+      </div>
     </div>
+  </div>
+  <button id="box-location" class="location">Box Location</button>
+
     <script src="bundle.js"></script>
   </body>
 </html>
