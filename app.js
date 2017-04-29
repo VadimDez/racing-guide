@@ -371,6 +371,11 @@ app.renderEvent.addEventListener(() => {
 
 });
 
+
+
+
+
+
 let buttonInnerSend = document.getElementById("send-my-location-inner");
 let buttonOuterSend = document.getElementById("send-my-location-outer");
 
@@ -431,90 +436,34 @@ const sendPoint = position => {
   });
 }
 
+
+
 document.addEventListener("DOMContentLoaded", function() {
-
-    for(var i=0;i<innerPoints.length;i++){
-
-        var buzz = new THREE.Object3D;
-        var loader = new THREE.TextureLoader();
-        loader.load('buzz.png', texture => {
-            var geometry = new THREE.BoxGeometry(10, 10, 10)
-            var material = new THREE.MeshBasicMaterial({ map: texture })
-
-            var mesh = new THREE.Mesh(geometry, material)
-            mesh.scale.set(100, 100, 100)
-            buzz.add(mesh)
-        });
-
-// have our geolocated object start somewhere, in this case
-// near Georgia Tech in Atlanta.
-// you should probably adjust this to a spot closer to you
-// (we found the lon/lat of Georgia Tech using Google Maps)
-        var gatechGeoEntity = new Cesium.Entity({
-            name: "Zeiss",
-            // position: Cartesian3.fromDegrees(-84.398881, 33.778463),
-            position: Cartesian3.fromDegrees(innerPoints[i].x, innerPoints[i].y),
-            orientation: Cesium.Quaternion.IDENTITY
-        });
-
-        var gatechGeoTarget = new THREE.Object3D;
-        gatechGeoTarget.add(buzz)
-        scene.add(gatechGeoTarget);
-
-// create a 1m cube with a wooden box texture on it, that we will attach to the geospatial object when we create it
-// Box texture from https://www.flickr.com/photos/photoshoproadmap/8640003215/sizes/l/in/photostream/
-//, licensed under https://creativecommons.org/licenses/by/2.0/legalcode
-        var boxGeoObject = new THREE.Object3D;
-
-        var box = new THREE.Object3D();
-        var loader = new THREE.TextureLoader();
-        loader.load('box.png', texture => {
-            var geometry = new THREE.BoxGeometry(1, 1, 1);
-            var material = new THREE.MeshBasicMaterial({ map: texture });
-            var mesh = new THREE.Mesh(geometry, material);
-            box.add(mesh);
-        })
-
-        var boxGeoEntity = new Argon.Cesium.Entity({
-            name: "I have a box: "+i,
-            position:  Cartesian3.fromDegrees(innerPoints[i].x,innerPoints[i].y, innerPoints[i].z),//Cartesian3.ZERO,
-            orientation: Cesium.Quaternion.IDENTITY
-        });
-
-        boxGeoObject.add(box);
-
-// Create a DIV to use to label the position and distance of the cube
-        let boxLocDiv = document.getElementById("box-location");
-        let boxLocDiv2 = boxLocDiv.cloneNode(true);
-        const boxLabel = new THREE.CSS3DSprite([boxLocDiv, boxLocDiv2]);
-        boxLabel.scale.set(0.02, 0.02, 0.02);
-// boxLabel.scale.set(100000, 100000, 100000);
-        boxLabel.position.set(0, 1.25, 0);
-        boxGeoObject.add(boxLabel);
-
-// putting position and orientation in the constructor above is the
-// equivalent of doing this:
-//
-//     const boxPosition = new Cesium.ConstantPositionProperty
-//                   (Cartesian3.ZERO.clone(), ReferenceFrame.FIXED);
-//     boxGeoEntity.position = boxPosition;
-//     const boxOrientation = new Cesium.ConstantProperty(Cesium.Quaternion);
-//     boxOrientation.setValue(Cesium.Quaternion.IDENTITY);
-//     boxGeoEntity.orientation = boxOrientation;
-
-        //var boxInit = false;
-        var boxCartographicDeg = [innerPoints[i]];
-        var lastInfoText = "last info";
-        var lastBoxText = "last bax";
-
-// make floating point output a little less ugly
-        function toFixed(value, precision) {
-            var power = Math.pow(10, precision || 0);
-            return String(Math.round(value * power) / power);
-        }
-
-        boxGeoEntity.orientation.setValue(Cesium.Quaternion.IDENTITY);
-        scene.add(boxGeoObject);
-    }
-
+  for (let i = 0;i < innerPoints.length; i++) {
+    renderBox(innerPoints[i]);
+  }
 });
+
+function renderBox(point) {
+  let boxGeoObject = new THREE.Object3D;
+
+  let box = new THREE.Object3D();
+  let loader = new THREE.TextureLoader();
+  loader.load('box.png', texture => {
+    let geometry = new THREE.BoxGeometry(1, 1, 1);
+    let material = new THREE.MeshBasicMaterial({ map: texture });
+    let mesh = new THREE.Mesh(geometry, material);
+    box.add(mesh);
+  });
+
+  let boxGeoEntity = new Argon.Cesium.Entity({
+    name: "Box",
+    position:  Cartesian3.fromDegrees(point.x, point.y, point.z),//Cartesian3.ZERO,
+    orientation: Cesium.Quaternion.IDENTITY
+  });
+
+  boxGeoObject.add(box);
+
+  boxGeoEntity.orientation.setValue(Cesium.Quaternion.IDENTITY);
+  scene.add(boxGeoObject);
+}
