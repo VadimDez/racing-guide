@@ -130,7 +130,8 @@ loader.load('buzz.png', texture => {
 // (we found the lon/lat of Georgia Tech using Google Maps)
 var gatechGeoEntity = new Cesium.Entity({
   name: "Georgia Tech",
-  position: Cartesian3.fromDegrees(-84.398881, 33.778463),
+  // position: Cartesian3.fromDegrees(-84.398881, 33.778463),
+  position: Cartesian3.fromDegrees(48.09599889999999, 11.523741699999999),
   orientation: Cesium.Quaternion.IDENTITY
 });
 
@@ -154,7 +155,7 @@ loader.load('box.png', texture => {
 
 var boxGeoEntity = new Argon.Cesium.Entity({
   name: "I have a box",
-  position: Cartesian3.ZERO,
+  position:  Cartesian3.fromDegrees(11.523950, 48.09599889999999, 552.3),//Cartesian3.ZERO,
   orientation: Cesium.Quaternion.IDENTITY
 });
 
@@ -165,6 +166,7 @@ let boxLocDiv = document.getElementById("box-location");
 let boxLocDiv2 = boxLocDiv.cloneNode(true);
 const boxLabel = new THREE.CSS3DSprite([boxLocDiv, boxLocDiv2]);
 boxLabel.scale.set(0.02, 0.02, 0.02);
+// boxLabel.scale.set(100000, 100000, 100000);
 boxLabel.position.set(0, 1.25, 0);
 boxGeoObject.add(boxLabel);
 
@@ -189,6 +191,8 @@ function toFixed(value, precision) {
   return String(Math.round(value * power) / power);
 }
 
+boxGeoEntity.orientation.setValue(Cesium.Quaternion.IDENTITY);
+scene.add(boxGeoObject);
 // the updateEvent is called each time the 3D world should be
 // rendered, before the renderEvent.  The state of your application
 // should be updated here.
@@ -199,6 +203,17 @@ app.updateEvent.addEventListener(frame => {
   // assuming we know the user's pose, set the position of our
   // THREE user object to match it
   if (userPose.poseStatus & Argon.PoseStatus.KNOWN) {
+
+    // alert(JSON.stringify(userLocation.position));
+    // if (
+    //   userPose.position.z != 0 && (
+    //     Math.abs(parseFloat(userLocation.position.z) - userPose.position.z) <= 30 ||
+    //     Math.abs(parseFloat(userLocation.position.x) - userPose.position.x) <= 30 ||
+    //     Math.abs(parseFloat(userLocation.position.y) - userPose.position.y) <= 30
+    //   )
+    // ) {
+    //   return;
+    // }
     userLocation.position.copy(userPose.position);
   } else {
     // if we don't know the user pose we can't do anything
@@ -212,23 +227,23 @@ app.updateEvent.addEventListener(frame => {
 
     // set the box's position to 10 meters away from the user.
     // First, clone the userPose postion, and add 10 to the X
-    const boxPos = userPose.position.clone();
-    boxPos.x = innerPoints[0].x;
-    boxPos.y = innerPoints[0].y;
-    boxPos.z += innerPoints[0].z;
+    // const boxPos = userPose.position.clone();
+    // boxPos.x = innerPoints[0].x;
+    // boxPos.y = innerPoints[0].y;
+    // boxPos.z = innerPoints[0].z;
     // set the value of the box Entity to this local position, by
     // specifying the frame of reference to our local frame
-    boxGeoEntity.position.setValue(boxPos, defaultFrame);
+    // boxGeoEntity.position.setValue(boxPos, defaultFrame);
 
     // orient the box according to the local world frame
-    boxGeoEntity.orientation.setValue(Cesium.Quaternion.IDENTITY);
+    // boxGeoEntity.orientation.setValue(Cesium.Quaternion.IDENTITY);
 
     // now, we want to move the box's coordinates to the FIXED frame, so
     // the box doesn't move if the local coordinate system origin changes.
-    if (Argon.convertEntityReferenceFrame(boxGeoEntity, frame.time, ReferenceFrame.FIXED)) {
-      scene.add(boxGeoObject);
+    // if (Argon.convertEntityReferenceFrame(boxGeoEntity, frame.time, ReferenceFrame.FIXED)) {
+    //   scene.add(boxGeoObject);
       boxInit = true;
-    }
+    // }
   }
 
   // get the local coordinates of the local box, and set the THREE object
@@ -264,6 +279,11 @@ app.updateEvent.addEventListener(frame => {
       userLLA.height
     ];
   }
+
+  // console.log(CesiumMath.toDegrees(userLLA.longitude));
+  // console.log(CesiumMath.toDegrees(userLLA.latitude));
+  // console.log(CesiumMath.toDegrees(userLLA.longitude));
+  // console.log(CesiumMath.toDegrees(userLLA.latitude));
 
   const boxPoseFIXED = app.context.getEntityPose(boxGeoEntity, ReferenceFrame.FIXED);
   const boxLLA = Cesium.Ellipsoid.WGS84.cartesianToCartographic(boxPoseFIXED.position);
