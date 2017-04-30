@@ -12,10 +12,18 @@
     <script src="CSS3DArgonRenderer.js"></script>
     <script src="CSS3DArgonHUD.js"></script>
     <script src="a-frame-look-at-component.js"></script>
+    <script src="http://racing-guide-node.azurewebsites.net/socket.io/socket.io.js"></script>
     <link rel="stylesheet" type="text/css" href="a-frame-style.css">
 </head>
 <body>
 <script>
+  var socket = io('http://racing-guide-node.azurewebsites.net');
+  socket.on('connect', function(){
+    alert('connected');
+  });
+  socket.on('event', function(data){});
+  socket.on('disconnect', function(){});
+
   AFRAME.registerComponent('showdistance', {
     schema: {
       default: ""
@@ -45,78 +53,78 @@
     }
   });
 
-  function asd() {
-    var $container = document.getElementById('container');
-    var $scene = document.querySelector('ar-scene');
-
-    var array = [
-
-      {"x":0.7239232202266955,"y":-0.05768676830430602,"z":8.726333924908975},
-      {"x":2.2977402423407804,"y":-0.4843165834056728,"z":3.767754536912786},
-      {"x":1.9140858615530614,"y":-0.5274166705734699,"z":10.449892995710567},
-      {"x":2.8792310607942837,"y":-0.24024049126625185,"z":6.702484204068137},
-      {"x":5.463557962933769,"y":-0.32056558831499016,"z":7.516843276691716},
-      {"x":11.088339706874104,"y":-0.2629107957455837,"z":15.282163285405705},
-      {"x":2.166154261478748,"y":-0.3842378873606848,"z":14.697186840935876},
-      {"x":2.1382601931935157,"y":-0.3747857789461126,"z":17.649277200858577},
-      {"x":9.541234629122062,"y":0.3552871424579589,"z":24.06262547169071},
-      {"x":11.52395,"y":48.095998900000005,"z":552.3000000004357},
-      {"x":11.52395,"y":48.095998900000005,"z":552.3000000004357},
-      {"x":11.52395,"y":48.095998900000005,"z":552.3000000004357},
-      {"x":11.52395,"y":48.095998900000005,"z":552.3000000004357},
-      {"x":11.52395,"y":48.095998900000005,"z":552.3000000004357},
-      {"x":11.52395,"y":48.095998900000005,"z":552.3000000004357},
-      {"x":11.52395,"y":48.095998900000005,"z":552.3000000004357}
-    ];
-
-
-    array.forEach(function (point, i) {
-      var id = 'point' + i;
-      var div = document.createElement('div');
-      div.setAttribute('id', id + 'pin');
-      var i = document.createElement('i');
-      i.classList.add('fa');
-      i.classList.add('fa-map-maker');
-      i.setAttribute('aria-hidden', 'true');
-      div.appendChild(i);
-      $container.appendChild(div);
-
-
-      var $label = document.createElement('div');
-      $label.setAttribute('id', id + 'div');
-      $label.classList.add('label');
-      $label.innerText = id;
-      $container.appendChild($label);
-
-      var $geoPos = document.createElement('ar-geopose');
-      $geoPos.setAttribute('id', 'getpose_'+id);
-//      $geoPos.setAttribute('lla', point.x + ' ' + point.y + ' ' + point.z);
-      $geoPos.setAttribute('lla', ' 11.57364 48.153015 483.0');
-      $geoPos.setAttribute('userotation', "false");
-      var $aEntrity = document.createElement('a-entity');
-      $aEntrity.setAttribute('billboard', "true");
-      $aEntrity.setAttribute('fixedsize', '20');
-
-      var $aPlane = document.createElement('a-entity');
-      $aPlane.setAttribute('rotation', '0 0 0');
-      $aPlane.setAttribute('scale', '0.05 0.05 0.05');
-      $aPlane.setAttribute('css-object', 'div: #' + id + 'pin');
-
-      $aEntrity.appendChild($aPlane);
-
-      var $innerEntity = document.createElement('a-entity');
-      $innerEntity.setAttribute('id', 'div: #' + id + 'div');
-      $innerEntity.setAttribute('css-object', 'div: #' + id + 'div');
-      $innerEntity.setAttribute('scale', '0.02 0.02 0.02');
-      $innerEntity.setAttribute('position', '0 4 0');
-      $innerEntity.setAttribute('showdistance', "Tech Tower @ Georgia Tech<br>Atlanta, GA, USA<br>It is ");
-
-      $aEntrity.appendChild($innerEntity);
-
-      $geoPos.appendChild($aEntrity);
-      $scene.appendChild($geoPos);
-    });
-  };
+//  function asd() {
+//    var $container = document.getElementById('container');
+//    var $scene = document.querySelector('ar-scene');
+//
+//    var array = [
+//
+//      {"x":0.7239232202266955,"y":-0.05768676830430602,"z":8.726333924908975},
+//      {"x":2.2977402423407804,"y":-0.4843165834056728,"z":3.767754536912786},
+//      {"x":1.9140858615530614,"y":-0.5274166705734699,"z":10.449892995710567},
+//      {"x":2.8792310607942837,"y":-0.24024049126625185,"z":6.702484204068137},
+//      {"x":5.463557962933769,"y":-0.32056558831499016,"z":7.516843276691716},
+//      {"x":11.088339706874104,"y":-0.2629107957455837,"z":15.282163285405705},
+//      {"x":2.166154261478748,"y":-0.3842378873606848,"z":14.697186840935876},
+//      {"x":2.1382601931935157,"y":-0.3747857789461126,"z":17.649277200858577},
+//      {"x":9.541234629122062,"y":0.3552871424579589,"z":24.06262547169071},
+//      {"x":11.52395,"y":48.095998900000005,"z":552.3000000004357},
+//      {"x":11.52395,"y":48.095998900000005,"z":552.3000000004357},
+//      {"x":11.52395,"y":48.095998900000005,"z":552.3000000004357},
+//      {"x":11.52395,"y":48.095998900000005,"z":552.3000000004357},
+//      {"x":11.52395,"y":48.095998900000005,"z":552.3000000004357},
+//      {"x":11.52395,"y":48.095998900000005,"z":552.3000000004357},
+//      {"x":11.52395,"y":48.095998900000005,"z":552.3000000004357}
+//    ];
+//
+//
+//    array.forEach(function (point, i) {
+//      var id = 'point' + i;
+//      var div = document.createElement('div');
+//      div.setAttribute('id', id + 'pin');
+//      var i = document.createElement('i');
+//      i.classList.add('fa');
+//      i.classList.add('fa-map-maker');
+//      i.setAttribute('aria-hidden', 'true');
+//      div.appendChild(i);
+//      $container.appendChild(div);
+//
+//
+//      var $label = document.createElement('div');
+//      $label.setAttribute('id', id + 'div');
+//      $label.classList.add('label');
+//      $label.innerText = id;
+//      $container.appendChild($label);
+//
+//      var $geoPos = document.createElement('ar-geopose');
+//      $geoPos.setAttribute('id', 'getpose_'+id);
+////      $geoPos.setAttribute('lla', point.x + ' ' + point.y + ' ' + point.z);
+//      $geoPos.setAttribute('lla', ' 11.57364 48.153015 483.0');
+//      $geoPos.setAttribute('userotation', "false");
+//      var $aEntrity = document.createElement('a-entity');
+//      $aEntrity.setAttribute('billboard', "true");
+//      $aEntrity.setAttribute('fixedsize', '20');
+//
+//      var $aPlane = document.createElement('a-entity');
+//      $aPlane.setAttribute('rotation', '0 0 0');
+//      $aPlane.setAttribute('scale', '0.05 0.05 0.05');
+//      $aPlane.setAttribute('css-object', 'div: #' + id + 'pin');
+//
+//      $aEntrity.appendChild($aPlane);
+//
+//      var $innerEntity = document.createElement('a-entity');
+//      $innerEntity.setAttribute('id', 'div: #' + id + 'div');
+//      $innerEntity.setAttribute('css-object', 'div: #' + id + 'div');
+//      $innerEntity.setAttribute('scale', '0.02 0.02 0.02');
+//      $innerEntity.setAttribute('position', '0 4 0');
+//      $innerEntity.setAttribute('showdistance', "Tech Tower @ Georgia Tech<br>Atlanta, GA, USA<br>It is ");
+//
+//      $aEntrity.appendChild($innerEntity);
+//
+//      $geoPos.appendChild($aEntrity);
+//      $scene.appendChild($geoPos);
+//    });
+//  };
 </script>
 <div id="container" hidden>
     <!--<div id="gtdiv" class="label">Georgia Tech</div>-->
@@ -164,12 +172,12 @@
     <div id="home11pin" class="pin"><i class="fa fa-map-marker" aria-hidden="true"></i></div>
     <div id="home12div" class="label">Home</div>
     <div id="home12pin" class="pin"><i class="fa fa-map-marker" aria-hidden="true"></i></div>
-    <div id="home13div" class="label">Home</div>
-    <div id="home13pin" class="pin"><i class="fa fa-map-marker" aria-hidden="true"></i></div>
-    <div id="home14div" class="label">Home</div>
-    <div id="home14pin" class="pin"><i class="fa fa-map-marker" aria-hidden="true"></i></div>
-    <div id="home15div" class="label">Home</div>
-    <div id="home15pin" class="pin"><i class="fa fa-map-marker" aria-hidden="true"></i></div>
+    <!--<div id="home13div" class="label">Home</div>-->
+    <!--<div id="home13pin" class="pin"><i class="fa fa-map-marker" aria-hidden="true"></i></div>-->
+    <!--<div id="home14div" class="label">Home</div>-->
+    <!--<div id="home14pin" class="pin"><i class="fa fa-map-marker" aria-hidden="true"></i></div>-->
+    <!--<div id="home15div" class="label">Home</div>-->
+    <!--<div id="home15pin" class="pin"><i class="fa fa-map-marker" aria-hidden="true"></i></div>-->
 </div>
 <ar-scene>
     <a-assets>
@@ -200,7 +208,7 @@
         <!--</a-entity>-->
     <!--</ar-geopose>-->
 
-    <ar-geopose id="Home" lla=" 11.52395 48.095998900000005 500" userotation="false">
+    <ar-geopose id="Home" lla=" 11.52395 48.095998900000005 490" userotation="false">
         <a-entity fixedsize="20" billboard>
             <a-plane rotation="0 0 0" width="2.9" height="4" src="#buzzpin" transparent="true" ></a-plane>
             <a-entity css-object="div: #homepin" scale="0.05 0.05 0.05" position="0 0 0"></a-entity>
@@ -208,28 +216,28 @@
         </a-entity>
     </ar-geopose>
 
-    <ar-geopose id="Homea" lla=" 11.523894 48.096002 500" userotation="false">
+    <ar-geopose id="Homea" lla=" 11.523894 48.096002 490" userotation="false">
         <a-entity fixedsize="20" billboard>
             <a-entity css-object="div: #homeapin" scale="0.05 0.05 0.05" position="0 0 0"></a-entity>
             <a-entity css-object="div: #homeadiv" scale="0.02 0.02 0.02" position="0 3 0" showdistance="Home<br>It is "></a-entity>
         </a-entity>
     </ar-geopose>
 
-    <ar-geopose id="Home1" lla=" 11.523894 48.096002 500" userotation="false">
+    <ar-geopose id="Home1" lla=" 11.523894 48.096002 490" userotation="false">
         <a-entity fixedsize="20" billboard>
             <a-entity css-object="div: #home1pin" scale="0.05 0.05 0.05" position="0 0 0"></a-entity>
             <a-entity css-object="div: #home1div" scale="0.02 0.02 0.02" position="0 3 0" showdistance="Home<br>It is "></a-entity>
         </a-entity>
     </ar-geopose>
 
-    <ar-geopose id="Home2" lla=" 11.523904 48.096075 500" userotation="false">
+    <ar-geopose id="Home2" lla=" 11.523904 48.096075 490" userotation="false">
         <a-entity fixedsize="20" billboard>
             <a-entity css-object="div: #home2pin" scale="0.05 0.05 0.05" position="0 0 0"></a-entity>
             <a-entity css-object="div: #home2div" scale="0.02 0.02 0.02" position="0 3 0" showdistance="Home<br>It is "></a-entity>
         </a-entity>
     </ar-geopose>
 
-    <ar-geopose id="Home2" lla=" 11.523901 48.096170 500" userotation="false">
+    <ar-geopose id="Home2" lla=" 11.523901 48.096170 490" userotation="false">
         <a-entity fixedsize="20" billboard>
             <a-entity css-object="div: #home2pin" scale="0.05 0.05 0.05" position="0 0 0"></a-entity>
             <a-entity css-object="div: #home2div" scale="0.02 0.02 0.02" position="0 3 0" showdistance="Home<br>It is "></a-entity>
@@ -237,7 +245,7 @@
     </ar-geopose>
 
 
-    <ar-geopose id="Home3" lla=" 11.523898 48.096308 500" userotation="false">
+    <ar-geopose id="Home3" lla=" 11.523898 48.096308 490" userotation="false">
         <a-entity fixedsize="20" billboard>
             <a-entity css-object="div: #home3pin" scale="0.05 0.05 0.05" position="0 0 0"></a-entity>
             <a-entity css-object="div: #home3div" scale="0.02 0.02 0.02" position="0 3 0" showdistance="Home<br>It is "></a-entity>
@@ -245,7 +253,7 @@
     </ar-geopose>
 
 
-    <ar-geopose id="Home4" lla=" 11.523898 48.096480 500" userotation="false">
+    <ar-geopose id="Home4" lla=" 11.523898 48.096480 490" userotation="false">
         <a-entity fixedsize="20" billboard>
             <a-entity css-object="div: #home4pin" scale="0.05 0.05 0.05" position="0 0 0"></a-entity>
             <a-entity css-object="div: #home4div" scale="0.02 0.02 0.02" position="0 3 0" showdistance="Home<br>It is "></a-entity>
@@ -253,14 +261,14 @@
     </ar-geopose>
 
 
-    <ar-geopose id="Home5" lla=" 11.523906 48.096718 500" userotation="false">
+    <ar-geopose id="Home5" lla=" 11.523906 48.096718 490" userotation="false">
         <a-entity fixedsize="20" billboard>
             <a-entity css-object="div: #home5pin" scale="0.05 0.05 0.05" position="0 0 0"></a-entity>
             <a-entity css-object="div: #home5div" scale="0.02 0.02 0.02" position="0 3 0" showdistance="Home<br>It is "></a-entity>
         </a-entity>
     </ar-geopose>
 
-    <ar-geopose id="Home6" lla=" 11.523903 48.096901 500" userotation="false">
+    <ar-geopose id="Home6" lla=" 11.523903 48.096901 490" userotation="false">
         <a-entity fixedsize="20" billboard>
             <a-entity css-object="div: #home6pin" scale="0.05 0.05 0.05" position="0 0 0"></a-entity>
             <a-entity css-object="div: #home6div" scale="0.02 0.02 0.02" position="0 3 0" showdistance="Home<br>It is "></a-entity>
@@ -268,7 +276,7 @@
     </ar-geopose>
 
 
-    <ar-geopose id="Home7" lla=" 11.523911 48.097035 500" userotation="false">
+    <ar-geopose id="Home7" lla=" 11.523911 48.097035 490" userotation="false">
         <a-entity fixedsize="20" billboard>
             <a-entity css-object="div: #home7pin" scale="0.05 0.05 0.05" position="0 0 0"></a-entity>
             <a-entity css-object="div: #home7div" scale="0.02 0.02 0.02" position="0 3 0" showdistance="Home<br>It is "></a-entity>
@@ -276,7 +284,7 @@
     </ar-geopose>
 
 
-    <ar-geopose id="Home8" lla=" 11.523916 48.097189 500" userotation="false">
+    <ar-geopose id="Home8" lla=" 11.523916 48.097189 490" userotation="false">
         <a-entity fixedsize="20" billboard>
             <a-entity css-object="div: #home8pin" scale="0.05 0.05 0.05" position="0 0 0"></a-entity>
             <a-entity css-object="div: #home8div" scale="0.02 0.02 0.02" position="0 3 0" showdistance="Home<br>It is "></a-entity>
@@ -284,7 +292,7 @@
     </ar-geopose>
 
 
-    <ar-geopose id="Home9" lla=" 11.523956 48.097347 500" userotation="false">
+    <ar-geopose id="Home9" lla=" 11.523956 48.097347 490" userotation="false">
         <a-entity fixedsize="20" billboard>
             <a-entity css-object="div: #home9pin" scale="0.05 0.05 0.05" position="0 0 0"></a-entity>
             <a-entity css-object="div: #home9div" scale="0.02 0.02 0.02" position="0 3 0" showdistance="Home<br>It is "></a-entity>
@@ -292,7 +300,7 @@
     </ar-geopose>
 
 
-    <ar-geopose id="Home10" lla=" 11.524112 48.097605 500" userotation="false">
+    <ar-geopose id="Home10" lla=" 11.524112 48.097605 490" userotation="false">
         <a-entity fixedsize="20" billboard>
             <a-entity css-object="div: #home10pin" scale="0.05 0.05 0.05" position="0 0 0"></a-entity>
             <a-entity css-object="div: #home10div" scale="0.02 0.02 0.02" position="0 3 0" showdistance="Home<br>It is "></a-entity>
@@ -300,7 +308,7 @@
     </ar-geopose>
 
 
-    <ar-geopose id="Home11" lla=" 11.524327 48.097841 500" userotation="false">
+    <ar-geopose id="Home11" lla=" 11.524327 48.097841 490" userotation="false">
         <a-entity fixedsize="20" billboard>
             <a-entity css-object="div: #home11pin" scale="0.05 0.05 0.05" position="0 0 0"></a-entity>
             <a-entity css-object="div: #home11div" scale="0.02 0.02 0.02" position="0 3 0" showdistance="Home<br>It is "></a-entity>
@@ -308,12 +316,59 @@
     </ar-geopose>
 
 
-    <ar-geopose id="Home12" lla=" 11.524674 48.097991 500" userotation="false">
+    <ar-geopose id="Home12" lla=" 11.524674 48.097991 490" userotation="false">
         <a-entity fixedsize="20" billboard>
             <a-entity css-object="div: #home12pin" scale="0.05 0.05 0.05" position="0 0 0"></a-entity>
             <a-entity css-object="div: #home12div" scale="0.02 0.02 0.02" position="0 3 0" showdistance="Home<br>It is "></a-entity>
         </a-entity>
     </ar-geopose>
+
+
+    <ar-geopose id="Home12" lla=" 11.524674 48.097991 490" userotation="false">
+        <a-curve id="track1">
+            <a-curve-point position="0 0 0"></a-curve-point>
+            <a-curve-point position="0 3 0"></a-curve-point>
+        </a-curve>
+    </ar-geopose>
+
 </ar-scene>
+
+<script>
+  window.onLean = function(amount) {
+    // Only look for amounts > 0, as these meant a lean forward
+    if (amount > 0) {
+      // TODO: Max amount leaning forward is 20, yet only ~10-12 is reached by normal leaning forward
+      // Hence color schemes could be 0-6 green, 7-10 yellow, 11-12 red
+console.log(document.querySelectorAll('.label').length);
+      document.querySelectorAll('.label').forEach(function (element) {
+        element.classList.remove('red green yellow');
+        var className = 'green';
+
+        if (amount > 10) {
+          className = 'yellow';
+        } else if (amount > 6) {
+          className = 'red';
+        }
+
+        element.classList.add(className);
+      });
+    }
+  };
+
+  window.ondevicemotion = function(event) {
+
+    let accelerationIGZ = Math.floor(event.accelerationIncludingGravity.z);
+    let accZ = Math.abs(accelerationIGZ);
+
+    if (event.accelerationIncludingGravity.z > 0) {
+      accZ *= -1;
+    }
+
+    if (window.onLean) {
+      alert(accZ);
+      window.onLean(accZ);
+    }
+  };
+</script>
 </body>
 </html>
