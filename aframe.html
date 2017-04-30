@@ -19,10 +19,21 @@
 <script>
   var socket = io('http://racing-guide-node.azurewebsites.net');
   socket.on('connect', function(){
-    alert('connected');
+    console.log('connected');
   });
-  socket.on('event', function(data){});
-  socket.on('disconnect', function(){});
+  socket.on('event', function(data){
+    console.log(data);
+  });
+  socket.on('message', function(data){
+    console.log(data);
+  });
+  socket.on('disconnect', function(){
+
+  });
+
+  socket.on('toggle flag', function (data) {
+    console.log(data);
+  });
 
   AFRAME.registerComponent('showdistance', {
     schema: {
@@ -339,9 +350,9 @@
     if (amount > 0) {
       // TODO: Max amount leaning forward is 20, yet only ~10-12 is reached by normal leaning forward
       // Hence color schemes could be 0-6 green, 7-10 yellow, 11-12 red
-console.log(document.querySelectorAll('.label').length);
+
       document.querySelectorAll('.label').forEach(function (element) {
-        element.classList.remove('red green yellow');
+        element.classList.remove('red', 'green', 'yellow');
         var className = 'green';
 
         if (amount > 10) {
@@ -365,7 +376,6 @@ console.log(document.querySelectorAll('.label').length);
     }
 
     if (window.onLean) {
-      alert(accZ);
       window.onLean(accZ);
     }
   };
