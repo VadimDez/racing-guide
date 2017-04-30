@@ -45,6 +45,8 @@ a {
     cursor: pointer;*/
 }
 
+
+
 .label.yellow {
     background-color: yellow;
 }
@@ -97,4 +99,12 @@ button {
 button:hover {
     color: rgba(127,255,255,0.85);
     background: black;
+}
+.panel_ctrl{
+    position: absolute;
+    bottom: 0px;
+    right: 0px;
+    width:100px;
+    height: 100px;
+    background:red;
 }
