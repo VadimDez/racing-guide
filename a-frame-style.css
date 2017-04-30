@@ -102,9 +102,15 @@ button:hover {
 }
 .panel_ctrl{
     position: absolute;
-    bottom: 0px;
-    right: 0px;
-    width:100px;
-    height: 100px;
-    background:red;
+    background-color: rgba(0, 0, 0, 0.4);
+    bottom: 0;
+    right: 0;
+    width: 80px;
+    height: 50px;
+}
+
+.panel_ctrl img {
+    display: block;
+    width: 100%;
+    height: 100%;
 }

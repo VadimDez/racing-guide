@@ -33,6 +33,10 @@
 
   socket.on('toggle flag', function (data) {
     console.log(data);
+
+    var $img =document.querySelector('.panel_ctrl > img');
+
+    $img.setAttribute('src', 'http://racing-guide-node.azurewebsites.net/' + data[0].toUpperCase() + data.substr(1) + '.png');
   });
 
   AFRAME.registerComponent('showdistance', {
@@ -191,7 +195,9 @@
     <!--<div id="home15pin" class="pin"><i class="fa fa-map-marker" aria-hidden="true"></i></div>-->
 </div>
 <ar-scene>
-    <div class="panel_ctrl"></div>
+    <div class="panel_ctrl">
+        <img src="" alt="">
+    </div>
     <a-assets>
         <img id="buzzpin" src="buzz-pin.png">
     </a-assets>
