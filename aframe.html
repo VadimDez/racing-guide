@@ -339,18 +339,18 @@
     if (amount > 0) {
       // TODO: Max amount leaning forward is 20, yet only ~10-12 is reached by normal leaning forward
       // Hence color schemes could be 0-6 green, 7-10 yellow, 11-12 red
-console.log(document.querySelectorAll('.label').length);
+
       document.querySelectorAll('.label').forEach(function (element) {
-        element.classList.remove('red green yellow');
-        var className = 'green';
-
-        if (amount > 10) {
-          className = 'yellow';
-        } else if (amount > 6) {
-          className = 'red';
-        }
-
-        element.classList.add(className);
+//        element.classList.remove('red green yellow');
+//        var className = 'green';
+//
+//        if (amount > 10) {
+//          className = 'yellow';
+//        } else if (amount > 6) {
+//          className = 'red';
+//        }
+//
+//        element.classList.add(className);
       });
     }
   };
@@ -365,7 +365,6 @@ console.log(document.querySelectorAll('.label').length);
     }
 
     if (window.onLean) {
-      alert(accZ);
       window.onLean(accZ);
     }
   };
