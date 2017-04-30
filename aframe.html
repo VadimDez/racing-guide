@@ -19,10 +19,21 @@
 <script>
   var socket = io('http://racing-guide-node.azurewebsites.net');
   socket.on('connect', function(){
-    alert('connected');
+    console.log('connected');
   });
-  socket.on('event', function(data){});
-  socket.on('disconnect', function(){});
+  socket.on('event', function(data){
+    console.log(data);
+  });
+  socket.on('message', function(data){
+    console.log(data);
+  });
+  socket.on('disconnect', function(){
+
+  });
+
+  socket.on('toggle flag', function (data) {
+    console.log(data);
+  });
 
   AFRAME.registerComponent('showdistance', {
     schema: {
@@ -341,16 +352,16 @@
       // Hence color schemes could be 0-6 green, 7-10 yellow, 11-12 red
 
       document.querySelectorAll('.label').forEach(function (element) {
-//        element.classList.remove('red green yellow');
-//        var className = 'green';
-//
-//        if (amount > 10) {
-//          className = 'yellow';
-//        } else if (amount > 6) {
-//          className = 'red';
-//        }
-//
-//        element.classList.add(className);
+        element.classList.remove('red', 'green', 'yellow');
+        var className = 'green';
+
+        if (amount > 10) {
+          className = 'yellow';
+        } else if (amount > 6) {
+          className = 'red';
+        }
+
+        element.classList.add(className);
       });
     }
   };
