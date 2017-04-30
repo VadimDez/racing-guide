@@ -44,42 +44,224 @@
       cssDiv.elements[1].innerHTML = msg;
     }
   });
+
+  function asd() {
+    var $container = document.getElementById('container');
+    var $scene = document.querySelector('ar-scene');
+
+    var array = [
+
+      {"x":0.7239232202266955,"y":-0.05768676830430602,"z":8.726333924908975},
+      {"x":2.2977402423407804,"y":-0.4843165834056728,"z":3.767754536912786},
+      {"x":1.9140858615530614,"y":-0.5274166705734699,"z":10.449892995710567},
+      {"x":2.8792310607942837,"y":-0.24024049126625185,"z":6.702484204068137},
+      {"x":5.463557962933769,"y":-0.32056558831499016,"z":7.516843276691716},
+      {"x":11.088339706874104,"y":-0.2629107957455837,"z":15.282163285405705},
+      {"x":2.166154261478748,"y":-0.3842378873606848,"z":14.697186840935876},
+      {"x":2.1382601931935157,"y":-0.3747857789461126,"z":17.649277200858577},
+      {"x":9.541234629122062,"y":0.3552871424579589,"z":24.06262547169071},
+      {"x":11.52395,"y":48.095998900000005,"z":552.3000000004357},
+      {"x":11.52395,"y":48.095998900000005,"z":552.3000000004357},
+      {"x":11.52395,"y":48.095998900000005,"z":552.3000000004357},
+      {"x":11.52395,"y":48.095998900000005,"z":552.3000000004357},
+      {"x":11.52395,"y":48.095998900000005,"z":552.3000000004357},
+      {"x":11.52395,"y":48.095998900000005,"z":552.3000000004357},
+      {"x":11.52395,"y":48.095998900000005,"z":552.3000000004357}
+    ];
+
+
+    array.forEach(function (point, i) {
+      var id = 'point' + i;
+      var div = document.createElement('div');
+      div.setAttribute('id', id + 'pin');
+      var i = document.createElement('i');
+      i.classList.add('fa');
+      i.classList.add('fa-map-maker');
+      i.setAttribute('aria-hidden', 'true');
+      div.appendChild(i);
+      $container.appendChild(div);
+
+
+      var $label = document.createElement('div');
+      $label.setAttribute('id', id + 'div');
+      $label.classList.add('label');
+      $label.innerText = id;
+      $container.appendChild($label);
+
+      var $geoPos = document.createElement('ar-geopose');
+      $geoPos.setAttribute('id', 'getpose_'+id);
+//      $geoPos.setAttribute('lla', point.x + ' ' + point.y + ' ' + point.z);
+      $geoPos.setAttribute('lla', ' 11.57364 48.153015 483.0');
+      $geoPos.setAttribute('userotation', "false");
+      var $aEntrity = document.createElement('a-entity');
+      $aEntrity.setAttribute('billboard', "true");
+      $aEntrity.setAttribute('fixedsize', '20');
+
+      var $aPlane = document.createElement('a-entity');
+      $aPlane.setAttribute('rotation', '0 0 0');
+      $aPlane.setAttribute('scale', '0.05 0.05 0.05');
+      $aPlane.setAttribute('css-object', 'div: #' + id + 'pin');
+
+      $aEntrity.appendChild($aPlane);
+
+      var $innerEntity = document.createElement('a-entity');
+      $innerEntity.setAttribute('id', 'div: #' + id + 'div');
+      $innerEntity.setAttribute('css-object', 'div: #' + id + 'div');
+      $innerEntity.setAttribute('scale', '0.02 0.02 0.02');
+      $innerEntity.setAttribute('position', '0 4 0');
+      $innerEntity.setAttribute('showdistance', "Tech Tower @ Georgia Tech<br>Atlanta, GA, USA<br>It is ");
+
+      $aEntrity.appendChild($innerEntity);
+
+      $geoPos.appendChild($aEntrity);
+      $scene.appendChild($geoPos);
+    });
+  };
 </script>
-<div hidden>
-    <div id="gtdiv" class="label">Georgia Tech</div>
-    <div id="londondiv" class="label">Tower of London</div>
-    <div id="tokyodiv" class="label">Tokyo</div>
-    <div id="sydneydiv" class="label">Sydney Opera House</div>
-    <div id="londonpin" class="pin"><i class="fa fa-map-marker" aria-hidden="true"></i></div>
-    <div id="tokyopin" class="pin"><i class="fa fa-map-marker" aria-hidden="true"></i></div>
-    <div id="sydneypin" class="pin"><i class="fa fa-map-marker" aria-hidden="true"></i></div>
+<div id="container" hidden>
+    <!--<div id="gtdiv" class="label">Georgia Tech</div>-->
+    <!--<div id="londondiv" class="label">Tower of London</div>-->
+    <!--<div id="tokyodiv" class="label">Tokyo</div>-->
+    <!--<div id="sydneydiv" class="label">Sydney Opera House</div>-->
+    <!--<div id="londonpin" class="pin"><i class="fa fa-map-marker" aria-hidden="true"></i></div>-->
+    <!--<div id="tokyopin" class="pin"><i class="fa fa-map-marker" aria-hidden="true"></i></div>-->
+    <!--<div id="sydneypin" class="pin"><i class="fa fa-map-marker" aria-hidden="true"></i></div>-->
+
+    <div id="homediv" class="label">Home</div>
+    <div id="homepin" class="pin"><i class="fa fa-map-marker" aria-hidden="true"></i></div>
+
+    <div id="homeadiv" class="label">Home</div>
+    <div id="homeapin" class="pin"><i class="fa fa-map-marker" aria-hidden="true"></i></div>
+
+    <div id="home1div" class="label">Home</div>
+    <div id="home1pin" class="pin"><i class="fa fa-map-marker" aria-hidden="true"></i></div>
+
+    <div id="home2div" class="label">Home</div>
+    <div id="home2pin" class="pin"><i class="fa fa-map-marker" aria-hidden="true"></i></div>
+
+    <div id="home3div" class="label">Home</div>
+    <div id="home3pin" class="pin"><i class="fa fa-map-marker" aria-hidden="true"></i></div>
+
+    <div id="home4div" class="label">Home</div>
+    <div id="home4pin" class="pin"><i class="fa fa-map-marker" aria-hidden="true"></i></div>
+
+
+    <div id="home5div" class="label">Home</div>
+    <div id="home5pin" class="pin"><i class="fa fa-map-marker" aria-hidden="true"></i></div>
+
+
+    <div id="home6div" class="label">Home</div>
+    <div id="home6pin" class="pin"><i class="fa fa-map-marker" aria-hidden="true"></i></div>
+    <div id="home7div" class="label">Home</div>
+    <div id="home7pin" class="pin"><i class="fa fa-map-marker" aria-hidden="true"></i></div>
+    <div id="home8div" class="label">Home</div>
+    <div id="home8pin" class="pin"><i class="fa fa-map-marker" aria-hidden="true"></i></div>
+    <div id="home9div" class="label">Home</div>
+    <div id="home9pin" class="pin"><i class="fa fa-map-marker" aria-hidden="true"></i></div>
+    <div id="home11div" class="label">Home</div>
+    <div id="home11pin" class="pin"><i class="fa fa-map-marker" aria-hidden="true"></i></div>
+    <div id="home12div" class="label">Home</div>
+    <div id="home12pin" class="pin"><i class="fa fa-map-marker" aria-hidden="true"></i></div>
+    <div id="home13div" class="label">Home</div>
+    <div id="home13pin" class="pin"><i class="fa fa-map-marker" aria-hidden="true"></i></div>
+    <div id="home14div" class="label">Home</div>
+    <div id="home14pin" class="pin"><i class="fa fa-map-marker" aria-hidden="true"></i></div>
+    <div id="home15div" class="label">Home</div>
+    <div id="home15pin" class="pin"><i class="fa fa-map-marker" aria-hidden="true"></i></div>
 </div>
 <ar-scene>
     <a-assets>
         <img id="buzzpin" src="buzz-pin.png">
     </a-assets>
-    <ar-geopose id="GT" lla="-84.394539 33.772501" userotation="false">
+    <!--<ar-geopose id="GT" lla="-84.394539 33.772501" userotation="false">-->
+        <!--<a-entity fixedsize="20" billboard>-->
+            <!--<a-plane rotation="0 0 0" width="2.9" height="4" src="#buzzpin" transparent="true" ></a-plane>-->
+            <!--<a-entity css-object="div: #gtdiv" scale="0.02 0.02 0.02" position="0 4 0" showdistance="Tech Tower @ Georgia Tech<br>Atlanta, GA, USA<br>It is "></a-entity>-->
+        <!--</a-entity>-->
+    <!--</ar-geopose>-->
+    <!--<ar-geopose id="London" lla="-0.076057 51.507953" userotation="false">-->
+        <!--<a-entity fixedsize="20" billboard>-->
+            <!--<a-entity css-object="div: #londonpin" scale="0.05 0.05 0.05" position="0 0 0"></a-entity>-->
+            <!--<a-entity css-object="div: #londondiv" scale="0.02 0.02 0.02" position="0 3 0" showdistance="The Tower of London<br>London, England<br>It is "></a-entity>-->
+        <!--</a-entity>-->
+    <!--</ar-geopose>-->
+    <!--<ar-geopose id="Sydney" lla="151.215286 -33.856900" userotation="false">-->
+        <!--<a-entity fixedsize="20" billboard>-->
+            <!--<a-entity css-object="div: #sydneypin" scale="0.05 0.05 0.05" position="0 0 0"></a-entity>-->
+            <!--<a-entity css-object="div: #sydneydiv" scale="0.02 0.02 0.02" position="0 3 0" showdistance="Sydney Opera House<br>Sydney, Australia<br>It is "></a-entity>-->
+        <!--</a-entity>-->
+    <!--</ar-geopose>-->
+    <!--<ar-geopose id="Tokyo" lla=" 139.752797 35.685138" userotation="false">-->
+        <!--<a-entity fixedsize="20" billboard>-->
+            <!--<a-entity css-object="div: #tokyopin" scale="0.05 0.05 0.05" position="0 0 0"></a-entity>-->
+            <!--<a-entity css-object="div: #tokyodiv" scale="0.02 0.02 0.02" position="0 3 0" showdistance="Imperial Palace<br>Tokyo, Japan<br>It is "></a-entity>-->
+        <!--</a-entity>-->
+    <!--</ar-geopose>-->
+
+    <ar-geopose id="Home" lla=" 11.52395 48.095998900000005 0" userotation="false">
         <a-entity fixedsize="20" billboard>
             <a-plane rotation="0 0 0" width="2.9" height="4" src="#buzzpin" transparent="true" ></a-plane>
-            <a-entity css-object="div: #gtdiv" scale="0.02 0.02 0.02" position="0 4 0" showdistance="Tech Tower @ Georgia Tech<br>Atlanta, GA, USA<br>It is "></a-entity>
+            <a-entity css-object="div: #homepin" scale="0.05 0.05 0.05" position="0 0 0"></a-entity>
+            <a-entity css-object="div: #homediv" scale="0.02 0.02 0.02" position="0 3 0" showdistance="Home<br>It is "></a-entity>
         </a-entity>
     </ar-geopose>
-    <ar-geopose id="London" lla="-0.076057 51.507953" userotation="false">
+
+    <ar-geopose id="Homea" lla=" 11.523894 48.096002 0" userotation="false">
         <a-entity fixedsize="20" billboard>
-            <a-entity css-object="div: #londonpin" scale="0.05 0.05 0.05" position="0 0 0"></a-entity>
-            <a-entity css-object="div: #londondiv" scale="0.02 0.02 0.02" position="0 3 0" showdistance="The Tower of London<br>London, England<br>It is "></a-entity>
+            <a-entity css-object="div: #homeapin" scale="0.05 0.05 0.05" position="0 0 0"></a-entity>
+            <a-entity css-object="div: #homeadiv" scale="0.02 0.02 0.02" position="0 3 0" showdistance="Home<br>It is "></a-entity>
         </a-entity>
     </ar-geopose>
-    <ar-geopose id="Sydney" lla="151.215286 -33.856900" userotation="false">
+
+    <ar-geopose id="Home1" lla=" 11.523894 48.096002 0" userotation="false">
         <a-entity fixedsize="20" billboard>
-            <a-entity css-object="div: #sydneypin" scale="0.05 0.05 0.05" position="0 0 0"></a-entity>
-            <a-entity css-object="div: #sydneydiv" scale="0.02 0.02 0.02" position="0 3 0" showdistance="Sydney Opera House<br>Sydney, Australia<br>It is "></a-entity>
+            <a-entity css-object="div: #home1pin" scale="0.05 0.05 0.05" position="0 0 0"></a-entity>
+            <a-entity css-object="div: #home1div" scale="0.02 0.02 0.02" position="0 3 0" showdistance="Home<br>It is "></a-entity>
         </a-entity>
     </ar-geopose>
-    <ar-geopose id="Tokyo" lla=" 139.752797 35.685138" userotation="false">
+
+    <ar-geopose id="Home2" lla=" 11.523904 48.096075 0" userotation="false">
         <a-entity fixedsize="20" billboard>
-            <a-entity css-object="div: #tokyopin" scale="0.05 0.05 0.05" position="0 0 0"></a-entity>
-            <a-entity css-object="div: #tokyodiv" scale="0.02 0.02 0.02" position="0 3 0" showdistance="Imperial Palace<br>Tokyo, Japan<br>It is "></a-entity>
+            <a-entity css-object="div: #home2pin" scale="0.05 0.05 0.05" position="0 0 0"></a-entity>
+            <a-entity css-object="div: #home2div" scale="0.02 0.02 0.02" position="0 3 0" showdistance="Home<br>It is "></a-entity>
+        </a-entity>
+    </ar-geopose>
+
+    <ar-geopose id="Home2" lla=" 11.523901 48.096170 0" userotation="false">
+        <a-entity fixedsize="20" billboard>
+            <a-entity css-object="div: #home2pin" scale="0.05 0.05 0.05" position="0 0 0"></a-entity>
+            <a-entity css-object="div: #home2div" scale="0.02 0.02 0.02" position="0 3 0" showdistance="Home<br>It is "></a-entity>
+        </a-entity>
+    </ar-geopose>
+
+
+    <ar-geopose id="Home3" lla=" 11.523898 48.096308 0" userotation="false">
+        <a-entity fixedsize="20" billboard>
+            <a-entity css-object="div: #home3pin" scale="0.05 0.05 0.05" position="0 0 0"></a-entity>
+            <a-entity css-object="div: #home3div" scale="0.02 0.02 0.02" position="0 3 0" showdistance="Home<br>It is "></a-entity>
+        </a-entity>
+    </ar-geopose>
+
+
+    <ar-geopose id="Home4" lla=" 11.523898 48.096480 0" userotation="false">
+        <a-entity fixedsize="20" billboard>
+            <a-entity css-object="div: #home4pin" scale="0.05 0.05 0.05" position="0 0 0"></a-entity>
+            <a-entity css-object="div: #home4div" scale="0.02 0.02 0.02" position="0 3 0" showdistance="Home<br>It is "></a-entity>
+        </a-entity>
+    </ar-geopose>
+
+
+    <ar-geopose id="Home5" lla=" 11.523906 48.096718 0" userotation="false">
+        <a-entity fixedsize="20" billboard>
+            <a-entity css-object="div: #home5pin" scale="0.05 0.05 0.05" position="0 0 0"></a-entity>
+            <a-entity css-object="div: #home5div" scale="0.02 0.02 0.02" position="0 3 0" showdistance="Home<br>It is "></a-entity>
+        </a-entity>
+    </ar-geopose>
+
+    <ar-geopose id="Home6" lla=" 11.523903 48.096901 0" userotation="false">
+        <a-entity fixedsize="20" billboard>
+            <a-entity css-object="div: #home6pin" scale="0.05 0.05 0.05" position="0 0 0"></a-entity>
+            <a-entity css-object="div: #home6div" scale="0.02 0.02 0.02" position="0 3 0" showdistance="Home<br>It is "></a-entity>
         </a-entity>
     </ar-geopose>
 </ar-scene>
